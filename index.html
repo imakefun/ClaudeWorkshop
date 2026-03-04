@@ -5,9 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#faf8ef">
-<title>2048</title>
+<meta name="theme-color" content="#fce4ec">
+<title>Candy 2048</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap');
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   html, body {
@@ -20,8 +22,9 @@
   }
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #faf8ef;
+    font-family: 'Baloo 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 50%, #e8eaf6 100%);
+    background-attachment: fixed;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,7 +44,8 @@
   .title {
     font-size: 2.4rem;
     font-weight: 800;
-    color: #776e65;
+    color: #d81b60;
+    text-shadow: 2px 2px 0px rgba(216, 27, 96, 0.15);
   }
 
   .scores {
@@ -50,17 +54,18 @@
   }
 
   .score-box {
-    background: #bbada0;
-    border-radius: 6px;
+    background: linear-gradient(135deg, #f48fb1, #ce93d8);
+    border-radius: 14px;
     padding: 6px 14px;
     text-align: center;
     min-width: 70px;
+    box-shadow: 0 3px 6px rgba(206, 147, 216, 0.3);
   }
 
   .score-box .label {
     font-size: 0.65rem;
     font-weight: 700;
-    color: #eee4da;
+    color: rgba(255,255,255,0.85);
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -80,27 +85,33 @@
   }
 
   .btn {
-    background: #8f7a66;
-    color: #f9f6f2;
+    background: linear-gradient(135deg, #ec407a, #ab47bc);
+    color: #fff;
     border: none;
-    border-radius: 6px;
+    border-radius: 14px;
     padding: 10px 18px;
+    font-family: inherit;
     font-size: 0.85rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background 0.15s;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 3px 8px rgba(171, 71, 188, 0.3);
   }
 
-  .btn:active { background: #776e65; }
+  .btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 1px 4px rgba(171, 71, 188, 0.3);
+  }
 
   .board-container {
     position: relative;
     width: 100%;
     max-width: 500px;
     aspect-ratio: 1;
-    background: #bbada0;
-    border-radius: 8px;
+    background: linear-gradient(145deg, #f8bbd0, #e1bee7);
+    border-radius: 18px;
     padding: 2%;
+    box-shadow: 0 6px 20px rgba(171, 71, 188, 0.2), inset 0 1px 0 rgba(255,255,255,0.4);
   }
 
   .grid {
@@ -113,8 +124,8 @@
   }
 
   .cell {
-    background: rgba(238, 228, 218, 0.35);
-    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 14px;
   }
 
   .tile-layer {
@@ -128,28 +139,29 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
+    border-radius: 14px;
     font-weight: 700;
     transition: top 0.12s ease, left 0.12s ease;
     will-change: top, left, transform;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.3);
   }
 
   .tile-new {
-    animation: pop-in 0.2s ease;
+    animation: pop-in 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .tile-merged {
-    animation: pop-merge 0.2s ease;
+    animation: pop-merge 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   @keyframes pop-in {
-    0% { transform: scale(0); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
+    0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
   }
 
   @keyframes pop-merge {
     0% { transform: scale(1); }
-    50% { transform: scale(1.15); }
+    40% { transform: scale(1.2); }
     100% { transform: scale(1); }
   }
 
@@ -160,8 +172,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(238, 228, 218, 0.73);
-    border-radius: 8px;
+    background: rgba(248, 187, 208, 0.8);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 18px;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s;
@@ -175,8 +189,9 @@
   .overlay-msg {
     font-size: 2rem;
     font-weight: 800;
-    color: #776e65;
+    color: #ad1457;
     margin-bottom: 16px;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
   }
 
   .overlay .btn { font-size: 1rem; padding: 12px 28px; }
@@ -187,15 +202,16 @@
     text-align: center;
     margin-top: 12px;
     font-size: 0.8rem;
-    color: #776e65;
+    color: #ad1457;
     line-height: 1.4;
+    opacity: 0.7;
   }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="title">2048</div>
+  <div class="title">Candy 2048</div>
   <div class="scores">
     <div class="score-box">
       <div class="label">Score</div>
@@ -222,7 +238,7 @@
   </div>
 </div>
 
-<div class="instructions">Swipe or use arrow keys to move tiles</div>
+<div class="instructions">Swipe or use arrow keys to slide the candies</div>
 
 <script>
 (function() {
@@ -233,20 +249,20 @@
   const TILE_SIZE_PCT = (100 - TILE_GAP_PCT * (SIZE + 1)) / SIZE;
 
   const TILE_STYLES = {
-    2:    { bg: '#eee4da', color: '#776e65', size: '2rem' },
-    4:    { bg: '#ede0c8', color: '#776e65', size: '2rem' },
-    8:    { bg: '#f2b179', color: '#f9f6f2', size: '2rem' },
-    16:   { bg: '#f59563', color: '#f9f6f2', size: '1.8rem' },
-    32:   { bg: '#f67c5f', color: '#f9f6f2', size: '1.8rem' },
-    64:   { bg: '#f65e3b', color: '#f9f6f2', size: '1.8rem' },
-    128:  { bg: '#edcf72', color: '#f9f6f2', size: '1.6rem' },
-    256:  { bg: '#edcc61', color: '#f9f6f2', size: '1.6rem' },
-    512:  { bg: '#edc850', color: '#f9f6f2', size: '1.6rem' },
-    1024: { bg: '#edc53f', color: '#f9f6f2', size: '1.3rem' },
-    2048: { bg: '#edc22e', color: '#f9f6f2', size: '1.3rem' },
+    2:    { bg: '#f8bbd0', color: '#880e4f', size: '2rem' },    // cotton candy pink
+    4:    { bg: '#e1bee7', color: '#4a148c', size: '2rem' },    // lavender taffy
+    8:    { bg: '#b39ddb', color: '#fff', size: '2rem' },       // grape candy
+    16:   { bg: '#90caf9', color: '#fff', size: '1.8rem' },     // blue raspberry
+    32:   { bg: '#80deea', color: '#006064', size: '1.8rem' },  // mint candy
+    64:   { bg: '#a5d6a7', color: '#1b5e20', size: '1.8rem' },  // green apple
+    128:  { bg: '#fff176', color: '#f57f17', size: '1.6rem' },  // lemon drop
+    256:  { bg: '#ffcc80', color: '#e65100', size: '1.6rem' },  // butterscotch
+    512:  { bg: '#ef9a9a', color: '#b71c1c', size: '1.6rem' },  // cherry
+    1024: { bg: '#f06292', color: '#fff', size: '1.3rem' },     // strawberry
+    2048: { bg: 'linear-gradient(135deg, #ec407a, #ab47bc, #42a5f5)', color: '#fff', size: '1.3rem' },  // rainbow candy
   };
 
-  const SUPER_STYLE = { bg: '#3c3a32', color: '#f9f6f2', size: '1.1rem' };
+  const SUPER_STYLE = { bg: 'linear-gradient(135deg, #f06292, #ba68c8, #64b5f6, #81c784, #fff176)', color: '#fff', size: '1.1rem' };
 
   // DOM refs
   const gridEl = document.getElementById('grid');
@@ -433,9 +449,9 @@
       moving = false;
       if (!won && hasValue(2048)) {
         won = true;
-        showOverlay('You Win!', 'Keep Going');
+        showOverlay('Sweet Victory!', 'Keep Going');
       } else if (isGameOver()) {
-        showOverlay('Game Over!', 'Try Again');
+        showOverlay('Sugar Crash!', 'Try Again');
       }
     }, 150);
 
